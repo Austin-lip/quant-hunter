@@ -201,7 +201,7 @@ function ApplyPanel({
             微信扫码直投（更快，12h 内首响）
           </div>
           <img
-            src={siteConfig.qrcodes.wechat}
+            src={import.meta.env.BASE_URL + siteConfig.qrcodes.wechat}
             alt="微信二维码"
             className="mx-auto w-36 rounded-md border border-border bg-white p-1.5"
           />
