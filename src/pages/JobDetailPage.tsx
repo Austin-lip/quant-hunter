@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 function Block({ title, items }: { title: string; items: string[] }) {
+  if (items.length === 0) return null
   return (
     <div>
       <h2 className="font-display mb-4 text-xl font-bold">{title}</h2>
