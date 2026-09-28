@@ -46,11 +46,11 @@ export const siteConfig = {
     github: { label: 'GitHub', url: '' },
   },
 
-  /* ---------- 联系二维码（public/qr/ 目录下的图片路径） ---------- */
+  /* ---------- 联系二维码（不含前导斜杠，展示时自动拼接站点基路径） ---------- */
   qrcodes: {
-    wechat: '/qr/wechat.png',
-    xiaohongshu: '/qr/xiaohongshu.png',
-    maimai: '/qr/maimai.png',
+    wechat: 'qr/wechat.png',
+    xiaohongshu: 'qr/xiaohongshu.png',
+    maimai: 'qr/maimai.png',
   },
 
   /* ---------- 数据看板（首页头部数字） ---------- */
