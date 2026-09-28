@@ -4,11 +4,11 @@ const job: Job = {
   slug: 'quant-model-researcher-intern-bj',
   title: '量化模型研究员（实习·校招方向）',
   function: '量化研究',
-  location: '北京',
+  location: '北京/上海',
   employment: '实习',
   seniority: '应届可投',
   salary: '1k-2k/天',
-  companyLabel: '头部量化私募 · 北京',
+  companyLabel: '头部量化私募 · 北京/上海',
   postedAt: '2026-09-28',
   summary:
     '以深度学习为核心的量化模型研发实习，覆盖特征工程、模型架构设计、训练调优与回测归因全流程。',
