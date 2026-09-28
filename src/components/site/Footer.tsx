@@ -113,7 +113,7 @@ export default function Footer() {
                 {qrList.map((q) => (
                   <div key={q.label} className="text-center">
                     <img
-                      src={q.src}
+                      src={import.meta.env.BASE_URL + q.src}
                       alt={`${q.label}二维码`}
                       className="w-24 rounded-lg border border-border bg-white p-1 sm:w-28"
                     />
