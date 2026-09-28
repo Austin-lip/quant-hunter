@@ -1,5 +1,5 @@
 import { Trophy } from 'lucide-react'
-import { siteConfig } from '@/config/site'
+import { getAllCases } from '@/content/cases'
 import SectionHeading from '@/components/site/SectionHeading'
 
 export default function Cases() {
@@ -11,7 +11,7 @@ export default function Cases() {
         desc="所有案例均经客户与候选人同意后匿名化展示，不透露任何机构、个人身份与具体薪资信息。"
       />
       <div className="grid gap-4 md:grid-cols-3">
-        {siteConfig.cases.map((c) => (
+        {getAllCases().map((c) => (
           <div
             key={c.title}
             className="card-glow flex flex-col rounded-xl border border-border bg-card p-6"
