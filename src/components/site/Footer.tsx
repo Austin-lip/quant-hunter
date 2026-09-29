@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { Mail, Linkedin, MapPin, X } from 'lucide-react'
+import { Mail, Linkedin, Github, MapPin, X } from 'lucide-react'
 import { useState } from 'react'
 import { siteConfig } from '@/config/site'
 
@@ -50,6 +50,17 @@ export default function Footer() {
       label: '领英',
       sub: 'LinkedIn 主页',
       href: socials.linkedin.url,
+    },
+    {
+      key: 'github',
+      icon: (
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background">
+          <Github className="h-4 w-4" />
+        </span>
+      ),
+      label: 'GitHub',
+      sub: 'github.com/Austin-lip',
+      href: socials.github.url,
     },
     {
       key: 'xiaohongshu',
@@ -114,7 +125,7 @@ export default function Footer() {
             <p className="mt-1.5 text-xs text-muted-foreground">
               点击图标直接联系；微信 / 脉脉扫码添加
             </p>
-            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
               {channels.map((c) => {
                 const inner = (
                   <>
