@@ -44,7 +44,7 @@ export const siteConfig = {
       url: 'https://xhslink.cn/o/9wBx1Dkwm6G',
     },
     maimai: { label: '脉脉', url: '' }, // 暂无主页链接：填入脉脉主页 URL 后自动变为直达链接
-    github: { label: 'GitHub', url: '' },
+    github: { label: 'GitHub', url: 'https://github.com/Austin-lip' },
   },
 
   /* ---------- 联系二维码（微信/脉脉点击弹出；不含前导斜杠） ---------- */
