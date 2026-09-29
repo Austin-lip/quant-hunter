@@ -1,133 +1,165 @@
 import { Link } from 'react-router'
-import { Mail, Linkedin, Github, Phone, ArrowUpRight } from 'lucide-react'
+import {
+  Mail,
+  Linkedin,
+  ArrowUpRight,
+  MapPin,
+  X,
+} from 'lucide-react'
+import { useState } from 'react'
 import { siteConfig } from '@/config/site'
+
+/** 社交平台图标（lucide 无对应品牌图标，用彩色字符块保持一排协调） */
+function SocialGlyph({ char, bg }: { char: string; bg: string }) {
+  return (
+    <span
+      className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold text-white"
+      style={{ backgroundColor: bg }}
+    >
+      {char}
+    </span>
+  )
+}
 
 export default function Footer() {
   const { contact, socials, qrcodes, brand, brandZh, privacyNote } = siteConfig
+  const [qr, setQr] = useState<null | { label: string; src: string }>(null)
 
-  const qrList = [
-    { label: '微信', src: qrcodes.wechat },
-    { label: '小红书', src: qrcodes.xiaohongshu },
-    { label: '脉脉', src: qrcodes.maimai },
-  ].filter((q) => q.src)
+  const qrBase = import.meta.env.BASE_URL
+
+  const channels = [
+    {
+      key: 'email',
+      icon: (
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <Mail className="h-4 w-4" />
+        </span>
+      ),
+      label: '邮箱',
+      sub: contact.email,
+      href: `mailto:${contact.email}`,
+    },
+    {
+      key: 'wechat',
+      icon: <SocialGlyph char="微" bg="#07c160" />,
+      label: '微信',
+      sub: '扫码添加',
+      onClick: () => setQr({ label: '微信', src: qrBase + qrcodes.wechat }),
+    },
+    {
+      key: 'linkedin',
+      icon: (
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#0a66c2] text-white">
+          <Linkedin className="h-4 w-4" />
+        </span>
+      ),
+      label: '领英',
+      sub: 'LinkedIn 主页',
+      href: socials.linkedin.url,
+    },
+    {
+      key: 'xiaohongshu',
+      icon: <SocialGlyph char="红" bg="#ff2442" />,
+      label: '小红书',
+      sub: socials.xiaohongshu.id ? `ID: ${socials.xiaohongshu.id}` : '主页',
+      href: socials.xiaohongshu.url,
+    },
+    {
+      key: 'maimai',
+      icon: <SocialGlyph char="脉" bg="#2f6bff" />,
+      label: '脉脉',
+      sub: socials.maimai.url ? '脉脉主页' : '扫码添加',
+      ...(socials.maimai.url
+        ? { href: socials.maimai.url }
+        : { onClick: () => setQr({ label: '脉脉', src: qrBase + qrcodes.maimai }) }),
+    },
+  ].filter((c) => c.href || c.onClick)
 
   return (
     <footer id="contact" className="border-t border-border/60 bg-card/40">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* 品牌 + 简介 */}
-          <div>
-            <div className="font-display text-lg font-bold">{brand}</div>
-            <div className="mt-1 text-sm text-muted-foreground">
-              {brandZh} · {siteConfig.consultant.name}
-            </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              {siteConfig.slogan}。{privacyNote}
-            </p>
-          </div>
-
-          {/* 联系方式 */}
-          <div>
-            <div className="text-sm font-semibold text-foreground">联系方式</div>
-            <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li>
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="flex items-center gap-2.5 transition-colors hover:text-primary"
-                >
-                  <Mail className="h-4 w-4 shrink-0" />
-                  {contact.email}
-                </a>
-              </li>
-              {contact.phone && (
-                <li className="flex items-center gap-2.5">
-                  <Phone className="h-4 w-4 shrink-0" />
-                  {contact.phone}
-                </li>
-              )}
-            </ul>
-            <div className="mt-5 space-y-2.5 text-sm">
-              {socials.linkedin.url && (
-                <a
-                  href={socials.linkedin.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <Linkedin className="h-4 w-4 shrink-0" />
-                  {socials.linkedin.label}
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
-              )}
-              {socials.xiaohongshu.url && (
-                <a
-                  href={socials.xiaohongshu.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <span className="flex h-4 w-4 items-center justify-center rounded-sm bg-[#ff2442] text-[10px] font-bold text-white">
-                    红
-                  </span>
-                  {socials.xiaohongshu.label}
-                  {socials.xiaohongshu.id && (
-                    <span className="text-xs">ID: {socials.xiaohongshu.id}</span>
-                  )}
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
-              )}
-              {socials.maimai.url && (
-                <a
-                  href={socials.maimai.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <span className="flex h-4 w-4 items-center justify-center rounded-sm bg-[#2f6bff] text-[10px] font-bold text-white">
-                    脉
-                  </span>
-                  {socials.maimai.label}
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
-              )}
-              {socials.github.url && (
-                <a
-                  href={socials.github.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <Github className="h-4 w-4 shrink-0" />
-                  {socials.github.label}
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* 二维码 */}
-          {qrList.length > 0 && (
-            <div className="lg:col-span-2">
-              <div className="text-sm font-semibold text-foreground">扫码联系</div>
-              <div className="mt-4 flex flex-wrap gap-5">
-                {qrList.map((q) => (
-                  <div key={q.label} className="text-center">
-                    <img
-                      src={import.meta.env.BASE_URL + q.src}
-                      alt={`${q.label}二维码`}
-                      className="w-24 rounded-lg border border-border bg-white p-1 sm:w-28"
-                    />
-                    <div className="mt-2 text-xs text-muted-foreground">{q.label}</div>
-                  </div>
-                ))}
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+        <div className="grid gap-6 lg:grid-cols-5">
+          {/* ===== 个人名片 ===== */}
+          <div className="card-glow rounded-xl border border-border bg-card p-7 lg:col-span-2">
+            <div className="flex items-center gap-4">
+              <span className="font-display flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary text-xl font-bold text-primary-foreground">
+                {siteConfig.consultant.avatarText}
+              </span>
+              <div>
+                <div className="font-display text-xl font-bold">
+                  {siteConfig.consultant.name}
+                </div>
+                <div className="mt-0.5 text-sm text-primary">
+                  {siteConfig.consultant.title}
+                </div>
               </div>
             </div>
-          )}
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+              {siteConfig.consultant.intro.split('\n').map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <MapPin className="h-3.5 w-3.5" />
+              {siteConfig.locations.map((loc) => (
+                <span
+                  key={loc}
+                  className="rounded-full border border-border px-2.5 py-1"
+                >
+                  {loc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ===== 联系方式 ===== */}
+          <div className="rounded-xl border border-border bg-card p-7 lg:col-span-3">
+            <div className="text-sm font-semibold">联系方式</div>
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              点击图标直接联系；微信 / 脉脉扫码添加
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {channels.map((c) => {
+                const inner = (
+                  <>
+                    {c.icon}
+                    <div className="mt-2.5 text-sm font-semibold">{c.label}</div>
+                    <div className="mt-0.5 max-w-full truncate text-xs text-muted-foreground">
+                      {c.sub}
+                    </div>
+                  </>
+                )
+                const cls =
+                  'group flex flex-col items-center rounded-lg border border-border px-3 py-4 text-center transition-colors hover:border-primary/50 hover:bg-primary/5'
+                return c.href ? (
+                  <a
+                    key={c.key}
+                    href={c.href}
+                    target={c.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    className={cls}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <button key={c.key} onClick={c.onClick} className={cls}>
+                    {inner}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="mt-6 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+              <span className="mt-0.5 inline-block h-3 w-3 shrink-0 rounded-full border border-primary/60" />
+              {privacyNote}
+            </p>
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <span>
-            © {new Date().getFullYear()} {brand} · {siteConfig.consultant.name}
+            © {new Date().getFullYear()} {brand} · {brandZh} · {siteConfig.consultant.name}
           </span>
           <span>岗位信息以最终沟通为准 · 机构名称经沟通后披露</span>
           <Link to="/jobs" className="transition-colors hover:text-primary">
@@ -135,6 +167,36 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+
+      {/* ===== 二维码弹窗（微信 / 脉脉） ===== */}
+      {qr && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4"
+          onClick={() => setQr(null)}
+        >
+          <div
+            className="relative rounded-xl border border-border bg-card p-6 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setQr(null)}
+              aria-label="关闭"
+              className="absolute right-3 top-3 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={qr.src}
+              alt={`${qr.label}二维码`}
+              className="mx-auto w-52 rounded-lg border border-border bg-white p-2"
+            />
+            <div className="mt-4 text-sm font-semibold">扫码添加{qr.label}</div>
+            <div className="mt-1 text-xs text-muted-foreground">
+              添加时请备注「Quant Hunter 官网」
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   )
 }
