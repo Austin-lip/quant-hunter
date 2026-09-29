@@ -1,0 +1,50 @@
+[
+ {
+  "title": "宽德",
+  "business": ["量化股票", "统计套利", "机器学习"],
+  "intro": "宽德投资（WizardQuant）以「探索计算奥义」为理念，自建编译工具链与软硬件协同的高性能计算平台，覆盖统计套利、机器学习全链路，是国内管理规模领先的量化私募之一。",
+  "website": "https://www.wizardquant.com/"
+ },
+ {
+  "title": "九坤投资",
+  "business": ["量化股票"],
+  "intro": "九坤投资（Ubiquant）成立于 2012 年，国内成立最早的量化投资机构之一，管理规模约 800 亿（截至 2025 年四季度）；投研与技术团队 90%+ 毕业于清华北大及美国藤校，长期布局 AI 前沿研究。",
+  "website": "https://www.ubiquant.com/"
+ },
+ {
+  "title": "灵均",
+  "business": ["量化股票"],
+  "intro": "灵均投资成立于 2014 年，专注量化投资的私募基金管理机构，以科技赋能投资，投研实力与管理规模长期处于行业第一梯队。",
+  "website": "http://www.lingjuninvest.com/"
+ },
+ {
+  "title": "天演",
+  "business": ["量化股票"],
+  "intro": "天演资本 2014 年发起设立，量化对冲基金；研究团队超过 50% 拥有博士学位，技术团队占比约 70%，在上海、深圳、北京、香港设有办公室。",
+  "website": "https://www.tianyancapital.com/"
+ },
+ {
+  "title": "明汯投资",
+  "business": ["量化股票"]
+ },
+ {
+  "title": "佳期",
+  "business": ["量化股票"]
+ },
+ {
+  "title": "金锝",
+  "business": ["量化股票"]
+ },
+ {
+  "title": "因诺",
+  "business": ["量化股票"]
+ },
+ {
+  "title": "洛书投资",
+  "business": ["期货及衍生品"]
+ },
+ {
+  "title": "纽达投资",
+  "business": ["多资产"]
+ }
+]
