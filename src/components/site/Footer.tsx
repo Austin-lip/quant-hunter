@@ -59,7 +59,7 @@ export default function Footer() {
         </span>
       ),
       label: 'GitHub',
-      sub: 'github.com/Austin-lip',
+      sub: 'github.com/austin-cui',
       href: socials.github.url,
     },
     {
