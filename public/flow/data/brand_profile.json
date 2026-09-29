@@ -180,15 +180,23 @@
  },
  {
   "title": "佳期",
-  "business": ["量化股票"]
+  "business": ["量化股票", "指数增强"],
+  "intro": "佳期投资（JQ Investments）2014 年成立于上海，专注量化投资的私募证券基金管理机构，管理规模百亿以上，持有香港 9 号牌照；量化研究、深度学习与技术开发岗位占比高，设上海、北京及海外办公室。",
+  "website": "https://www.jqinvestments.com",
+  "linkedin": "https://cn.linkedin.com/company/jq-investments"
  },
  {
   "title": "金锝",
-  "business": ["量化股票"]
+  "business": ["市场中性", "统计套利", "指数增强"],
+  "intro": "金锝资产 2011 年底由任思泓（北大、摩根士丹利 PDT 背景）创立，国内老牌百亿量化私募，专注数量化对冲基金策略，以市场中性/统计套利见长，长期深耕私行渠道，2020 年获 HFM 亚洲最佳市场中性基金奖，持香港 9 号牌。",
+  "website": "https://www.jindefund.com",
+  "linkedin": "https://cn.linkedin.com/company/上海金锝资产管理有限公司"
  },
  {
   "title": "明汯投资",
-  "business": ["量化股票"]
+  "business": ["量化股票", "指数增强", "CTA", "多策略对冲"],
+  "intro": "明汯投资 2014 年 4 月由裘慧明（宾大物理学博士，曾任 Millennium、HAP Capital 基金经理）创立于上海虹口，国内首家管理规模突破 500 亿的量化私募；构建覆盖全周期、多策略、多品种的量化资产管理平台，产品线含股票精选、指数增强、多策略对冲与 CTA。",
+  "website": "https://www.mhfunds.com"
  },
  {
   "title": "洛书投资",
@@ -197,5 +205,87 @@
  {
   "title": "纽达投资",
   "business": ["多资产"]
+ },
+ {
+  "title": "宽德",
+  "business": ["量化股票", "统计套利", "机器学习"],
+  "intro": "宽德投资（WizardQuant）自建高性能计算与低延迟交易平台，以统计套利和机器学习为核心策略，是国内管理规模领先的量化私募之一。",
+  "website": "https://www.wizardquant.com"
+ },
+ {
+  "title": "顽岩",
+  "business": ["全品种量化", "股票", "商品期货", "股指", "可转债", "期权"],
+  "intro": "顽岩资产 2015 年成立于上海陆家嘴，全品种覆盖的量化私募（股票、商品期货、股指、可转债、期权），策略以中高频为主。",
+  "website": "https://www.wanyantech.com/",
+  "linkedin": "https://cn.linkedin.com/company/wanyantech"
+ },
+ {
+  "title": "念空",
+  "business": ["AI量化", "指数增强", "市场中性"],
+  "intro": "念空科技 2015 年 3 月成立于上海，AI 驱动的全球对冲基金，管理规模百亿以上，以机器学习框架做全频段量化投资。",
+  "website": "https://www.goku-tech.com/",
+  "linkedin": "https://cn.linkedin.com/company/goku-tech"
+ },
+ {
+  "title": "卓识",
+  "business": ["期货CTA", "低延迟算法交易"],
+  "intro": "北京卓识私募 2016 年 4 月成立，创始人张卓（清华电子系、普林斯顿博士，曾任职骑士资本），以期货起家，专注低延时全自动算法交易，投研人员占比约 80%。"
+ },
+ {
+  "title": "进化论",
+  "business": ["量化多策略", "主观多头"],
+  "intro": "进化论资产由王一平创立（深圳前海），理念「数据+逻辑=科学投资」，量化为主、主观为辅的混合型私募，管理规模百亿以上。",
+  "website": "https://www.jhlfund.com"
+ },
+ {
+  "title": "乾象",
+  "business": ["AI量化", "机器学习", "超算平台"],
+  "intro": "乾象投资（Metabit Trading）2018 年成立，以 AI/机器学习为核心、自建超算算力的量化私募，投研团队中竞赛金牌获得者占比逾 25%。",
+  "website": "https://metabit-trading.com/",
+  "linkedin": "https://cn.linkedin.com/company/qianxiang-private-fund-management"
+ },
+ {
+  "title": "正瀛资产",
+  "business": ["底仓T0", "市场中性", "期权套利", "指数增强"],
+  "intro": "正瀛资产 2015 年成立于上海，以底仓 T0 为特色（中性底仓 T0、指增底仓 T0、期权套利），核心团队具海外期货高频背景，2025 年 9 月新晋百亿。",
+  "website": "http://www.geneasset.com/"
+ },
+ {
+  "title": "天算量化",
+  "business": ["AI量化", "股票", "期货"],
+  "intro": "天算量化 2013 年由何天鹰创立（北京），最早将 AI 非线性深度学习应用于股/期量化的机构之一，2026 年新晋百亿。",
+  "website": "http://www.techsharpe.com"
+ },
+ {
+  "title": "微观博易",
+  "business": ["低延迟程序化交易", "高频期货", "股票量化"],
+  "intro": "微观博易 2015 年 12 月成立于北京，低延迟程序化交易团队，创始人具 10 余年美国高频自营经验，2025 年新晋百亿。",
+  "website": "https://www.microtrading.com/",
+  "linkedin": "https://cn.linkedin.com/company/微观博易"
+ },
+ {
+  "title": "展弘投资",
+  "business": ["商品套利", "证券套利", "对冲", "CTA"],
+  "intro": "展弘投资 2014 年 12 月成立于上海，创始人陈方府（中科院信号处理硕士），聚焦商品类与证券类套利、对冲、CTA 四大策略线，投研人员占比 60% 以上。"
+ },
+ {
+  "title": "倍漾",
+  "business": ["AI原生量化", "机器学习"],
+  "intro": "倍漾私募 2020 年成立于南京，由冯霁博士（南京大学周志华教授学生、创新工场南京 AI 研究院执行院长）创立，李开复任联合创始人兼首席战略顾问；AI 原生量化路线，团队含 13 位奥赛金牌选手，江苏首家百亿量化私募。",
+  "website": "https://baiont.ai/"
+ },
+ {
+  "title": "申毅投资",
+  "business": ["量化选股", "市场中性", "期权波动率", "CTA"],
+  "intro": "申毅投资 2004 年由申毅（高盛背景）创立，发行 A 股第一只对冲基金，策略覆盖量化选股、中性、期权波动率与 CTA，在纽约设有分支机构。",
+  "website": "http://www.shenyitz.com",
+  "linkedin": "https://www.linkedin.com/company/上海申毅投资有限公司"
+ },
+ {
+  "title": "超量子",
+  "business": ["机器学习", "量化多策略"],
+  "intro": "超量子基金 2015 年组建团队、2020 年在中基协登记（深圳前海），由张晓泉博士领衔，结合机器学习与计量经济学做量化投资，管理规模约 140 亿，持有香港 9 号牌。",
+  "website": "https://en.superquant.fund/",
+  "linkedin": "https://cn.linkedin.com/company/深圳市前海超量子基金管理有限公司"
  }
 ]
