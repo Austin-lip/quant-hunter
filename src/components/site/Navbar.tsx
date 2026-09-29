@@ -9,7 +9,6 @@ const navItems = [
   { to: '/', label: '首页' },
   { to: '/jobs', label: '在招岗位' },
   { to: '/#cases', label: '成功案例' },
-  { to: '/insights', label: '市场思考' },
   { to: '/#faq', label: '常见问题' },
   { to: '/#contact', label: '联系我' },
 ]
