@@ -1,11 +1,5 @@
 import { Link } from 'react-router'
-import {
-  Mail,
-  Linkedin,
-  ArrowUpRight,
-  MapPin,
-  X,
-} from 'lucide-react'
+import { Mail, Linkedin, MapPin, X } from 'lucide-react'
 import { useState } from 'react'
 import { siteConfig } from '@/config/site'
 
