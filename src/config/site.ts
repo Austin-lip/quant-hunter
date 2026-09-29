@@ -5,7 +5,6 @@
  *  想改名字、联系方式、社交账号、口号、FAQ…… 都只改这一个文件。
  *  岗位内容在 src/content/jobs/（一个岗位一个文件）。
  *  成功案例在 src/content/cases/（一个案例一个文件）。
- *  市场思考在 src/content/insights/（一篇文章一个文件）。
  * ============================================================
  */
 
@@ -33,7 +32,7 @@ export const siteConfig = {
     phone: '',
   },
 
-  /* ---------- 社交账号（页脚与联系区展示，url 留空则隐藏该入口） ---------- */
+  /* ---------- 社交账号（联系区一排展示；url 留空则点击弹二维码） ---------- */
   socials: {
     linkedin: {
       label: 'LinkedIn',
@@ -44,14 +43,13 @@ export const siteConfig = {
       id: '1107925743',
       url: 'https://xhslink.cn/o/9wBx1Dkwm6G',
     },
-    maimai: { label: '脉脉', url: '' }, // 暂无主页链接，以二维码展示
+    maimai: { label: '脉脉', url: '' }, // 暂无主页链接：填入脉脉主页 URL 后自动变为直达链接
     github: { label: 'GitHub', url: '' },
   },
 
-  /* ---------- 联系二维码（不含前导斜杠，展示时自动拼接站点基路径） ---------- */
+  /* ---------- 联系二维码（微信/脉脉点击弹出；不含前导斜杠） ---------- */
   qrcodes: {
     wechat: 'qr/wechat.png',
-    xiaohongshu: 'qr/xiaohongshu.png',
     maimai: 'qr/maimai.png',
   },
 
@@ -65,48 +63,6 @@ export const siteConfig = {
 
   /* ---------- 覆盖地区 ---------- */
   locations: ['北京', '上海', '深圳', '杭州', '香港', '新加坡'],
-
-  /* ---------- 服务方向（首页「专注领域」） ---------- */
-  specialties: [
-    {
-      icon: 'line-chart',
-      title: '量化研究',
-      desc: '股票 / 期货 / 期权中高频策略研究，覆盖应届到资深 PM。',
-    },
-    {
-      icon: 'cpu',
-      title: '量化开发',
-      desc: 'C++ / Python 低延迟系统、回测平台、交易引擎工程师。',
-    },
-    {
-      icon: 'brain',
-      title: '机器学习',
-      desc: '深度学习因子、NLP、强化学习在投研场景的应用落地。',
-    },
-    {
-      icon: 'globe',
-      title: 'Web3 / 数字资产',
-      desc: '交易平台、做市商、链上数据方向的量化与工程人才。',
-    },
-    {
-      icon: 'briefcase',
-      title: '机构职能',
-      desc: '风控、数据、运营——量化机构的专业中后台岗位。',
-    },
-    {
-      icon: 'graduation-cap',
-      title: '校园招聘',
-      desc: '竞赛 / 顶尖院校背景的量化新星挖掘与长期跟踪。',
-    },
-  ] as const,
-
-  /* ---------- 服务流程 ---------- */
-  process: [
-    { step: '01', title: '初步沟通', desc: '15 分钟电话，了解你的方向、偏好与底线。' },
-    { step: '02', title: '匹配岗位', desc: '只推荐真正合适的机构，披露机构类型与要求。' },
-    { step: '03', title: '面试辅导', desc: '面经、流程跟进、Offer 谈判全程陪同。' },
-    { step: '04', title: '入职跟进', desc: '入职后持续回访，长期职业规划伙伴。' },
-  ],
 
   /* ---------- 常见问题（FAQ） ---------- */
   faqs: [
