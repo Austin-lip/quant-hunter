@@ -16,9 +16,14 @@ export default function Cases() {
             key={c.title}
             className="card-glow flex flex-col rounded-xl border border-border bg-card p-6"
           >
-            <div className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="mb-4 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
               <Trophy className="h-3.5 w-3.5" />
-              {c.tag}
+              {c.label}
+              {c.tag && (
+                <span className="rounded-full border border-primary/30 px-2 py-0.5 text-[10px] normal-case tracking-normal">
+                  {c.tag}
+                </span>
+              )}
             </div>
             <h3 className="font-display text-base font-bold leading-snug">
               {c.title}
