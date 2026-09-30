@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Send, ShieldCheck, Paperclip, CheckCircle2, Loader2 } from 'lucide-react'
 import { siteConfig } from '@/config/site'
-import { submitWithAttachment } from '@/lib/submit'
+import { isFormConfigured, submitApplication } from '@/lib/submit'
 import SectionHeading from '@/components/site/SectionHeading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 /** 候选人登记：配置 formAccessKey 后直接上传简历提交；未配置时回退为邮件客户端预填 */
 export default function RegisterCta() {
-  const hasForm = Boolean(siteConfig.formAccessKey)
+  const hasForm = isFormConfigured()
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -45,15 +45,13 @@ export default function RegisterCta() {
     e.preventDefault()
     if (!hasForm) return mailtoFallback()
     setStatus('sending')
-    const res = await submitWithAttachment({
-      subject: `【候选人登记】${form.name || '未署名'} · ${form.direction || '方向待定'}`,
-      data: {
-        姓名: form.name,
-        邮箱: form.email,
-        意向方向: form.direction,
-        意向地区: form.region || '（未填写）',
-        介绍: form.intro || '（未填写）',
-      },
+    const res = await submitApplication({
+      type: 'register',
+      name: form.name,
+      email: form.email,
+      direction: form.direction,
+      region: form.region,
+      intro: form.intro,
       resume,
     })
     setStatus(res.ok ? 'sent' : 'error')
