@@ -6,7 +6,7 @@ import {
 } from 'lucide-react'
 import { getAllJobs, getJobBySlug } from '@/content/jobs'
 import { siteConfig } from '@/config/site'
-import { submitWithAttachment } from '@/lib/submit'
+import { isFormConfigured, submitApplication } from '@/lib/submit'
 import ShareButton from '@/components/site/ShareButton'
 import JobCard from '@/components/site/JobCard'
 import { Badge } from '@/components/ui/badge'
@@ -185,7 +185,7 @@ function ApplyPanel({
   mailSubject: string
   mailBody: string
 }) {
-  const hasForm = Boolean(siteConfig.formAccessKey)
+  const hasForm = isFormConfigured()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [resume, setResume] = useState<File | null>(null)
@@ -200,13 +200,11 @@ function ApplyPanel({
     e.preventDefault()
     if (!hasForm) return fallback()
     setStatus('sending')
-    const res = await submitWithAttachment({
-      subject: `【应聘】${jobTitle}`,
-      data: {
-        姓名: name,
-        邮箱: email,
-        应聘岗位: jobTitle,
-      },
+    const res = await submitApplication({
+      type: 'apply',
+      name,
+      email,
+      jobTitle,
       resume,
     })
     setStatus(res.ok ? 'sent' : 'error')
