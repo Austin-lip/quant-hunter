@@ -33,7 +33,6 @@ export default function JobsPage() {
         <h1 className="font-display text-3xl font-bold sm:text-4xl">在招岗位</h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           机构名称以「类型 + 地区」标签保密展示，真实机构在第一通电话中确认。
-          点击任意岗位可复制链接转发给候选人。
         </p>
       </div>
 
