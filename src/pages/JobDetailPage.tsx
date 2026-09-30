@@ -1,15 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import {
-  ArrowLeft, MapPin, Clock, Flame, Mail, MessageCircle,
+  ArrowLeft, MapPin, Clock, Flame, MessageCircle, Send, Loader2,
   CheckCircle2, ChevronRight, Briefcase, Layers, Sparkles,
 } from 'lucide-react'
 import { getAllJobs, getJobBySlug } from '@/content/jobs'
 import { siteConfig } from '@/config/site'
+import { submitWithAttachment } from '@/lib/submit'
 import ShareButton from '@/components/site/ShareButton'
 import JobCard from '@/components/site/JobCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 function Block({ title, items }: { title: string; items: string[] }) {
   if (items.length === 0) return null
@@ -173,7 +175,7 @@ export default function JobDetailPage() {
   )
 }
 
-/** 申请面板：邮件投递 + 微信 + 响应承诺 */
+/** 申请面板：附件简历投递 + 微信 + 响应承诺（未配置 formAccessKey 时回退为邮件投递） */
 function ApplyPanel({
   jobTitle,
   mailSubject,
@@ -183,30 +185,98 @@ function ApplyPanel({
   mailSubject: string
   mailBody: string
 }) {
+  const hasForm = Boolean(siteConfig.formAccessKey)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [resume, setResume] = useState<File | null>(null)
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+
+  const fallback = () => {
+    window.location.href = `mailto:${siteConfig.contact.email}?subject=${mailSubject}&body=${mailBody}`
+    setStatus('sent')
+  }
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!hasForm) return fallback()
+    setStatus('sending')
+    const res = await submitWithAttachment({
+      subject: `【应聘】${jobTitle}`,
+      data: {
+        姓名: name,
+        邮箱: email,
+        应聘岗位: jobTitle,
+      },
+      resume,
+    })
+    setStatus(res.ok ? 'sent' : 'error')
+  }
+
+  if (status === 'sent') {
+    return (
+      <div className="rounded-xl border border-border bg-card p-6 text-center">
+        <CheckCircle2 className="mx-auto h-10 w-10 text-primary" />
+        <div className="mt-3 font-display text-lg font-bold">投递成功</div>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          {hasForm
+            ? '简历已提交，工作日 48 小时内回复，请留意邮箱。'
+            : '已为你打开邮件客户端，点击发送即完成投递；工作日 48 小时内回复。'}
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="rounded-xl border border-border bg-card p-6">
       <div className="font-display text-lg font-bold">申请这个岗位</div>
       <p className="mt-1.5 text-sm text-muted-foreground">
         工作日 48 小时内回复，合适即安排 15 分钟电话沟通。
       </p>
-      <div className="mt-5 space-y-3">
-        <Button asChild className="w-full gap-2 font-semibold">
-          <a href={`mailto:${siteConfig.contact.email}?subject=${mailSubject}&body=${mailBody}`}>
-            <Mail className="h-4 w-4" />
-            邮件投递（预填岗位名）
-          </a>
+      <form onSubmit={submit} className="mt-5 space-y-3">
+        <Input
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="姓名 *"
+        />
+        <Input
+          required
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="邮箱 *"
+        />
+        <Input
+          type="file"
+          required
+          accept=".pdf,.doc,.docx"
+          onChange={(e) => setResume(e.target.files?.[0] ?? null)}
+          className="cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:text-primary"
+        />
+        {status === 'error' && (
+          <p className="text-xs text-red-500">
+            提交未成功，请把简历发送至 {siteConfig.contact.email}
+          </p>
+        )}
+        <Button type="submit" disabled={status === 'sending'} className="w-full gap-2 font-semibold">
+          {status === 'sending' ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="h-4 w-4" />
+          )}
+          {hasForm ? '投递简历' : '邮件投递（预填岗位名）'}
         </Button>
-        <div className="rounded-lg border border-border bg-background p-4 text-center">
-          <div className="mb-2.5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <MessageCircle className="h-4 w-4 text-primary" />
-            微信扫码直投（更快，12h 内首响）
-          </div>
-          <img
-            src={import.meta.env.BASE_URL + siteConfig.qrcodes.wechat}
-            alt="微信二维码"
-            className="mx-auto w-36 rounded-md border border-border bg-white p-1.5"
-          />
+      </form>
+      <div className="mt-4 rounded-lg border border-border bg-background p-4 text-center">
+        <div className="mb-2.5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <MessageCircle className="h-4 w-4 text-primary" />
+          微信扫码直投（更快，12h 内首响）
         </div>
+        <img
+          src={import.meta.env.BASE_URL + siteConfig.qrcodes.wechat}
+          alt="微信二维码"
+          className="mx-auto w-36 rounded-md border border-border bg-white p-1.5"
+        />
       </div>
       <p className="mt-5 border-t border-border/60 pt-4 text-xs leading-relaxed text-muted-foreground">
         {siteConfig.privacyNote}投递「{jobTitle}」时请注明，方便快速匹配。
