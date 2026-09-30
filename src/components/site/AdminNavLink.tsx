@@ -6,13 +6,22 @@ import { siteConfig } from '@/config/site'
 /**
  * 「投递管理」导航入口 + 未读徽标。
  * 仅当本浏览器已登录管理账号（Supabase 会话）时显示——候选人看不到入口；
- * 未读数每 60 秒轮询一次数据库。
+ * 未读数在打开页面时查一次，之后固定在每天 9:00 刷新。
  */
 let client: SupabaseClient | null = null
 function getClient(): SupabaseClient | null {
   if (!siteConfig.supabase.url || !siteConfig.supabase.anonKey) return null
   if (!client) client = createClient(siteConfig.supabase.url, siteConfig.supabase.anonKey)
   return client
+}
+
+/** 距离下一个 9:00 的毫秒数 */
+function msUntilNextNine(): number {
+  const now = new Date()
+  const next = new Date(now)
+  next.setHours(9, 0, 0, 0)
+  if (next.getTime() <= now.getTime()) next.setDate(next.getDate() + 1)
+  return next.getTime() - now.getTime()
 }
 
 export default function AdminNavLink({ mobile = false, onClick }: { mobile?: boolean; onClick?: () => void }) {
@@ -36,11 +45,17 @@ export default function AdminNavLink({ mobile = false, onClick }: { mobile?: boo
       if (!stop) setUnread(count ?? 0)
     }
     check()
-    const timer = setInterval(check, 60_000)
+    // 打开页面时查一次；之后固定在每天 9:00 刷新（页面没开时，下次打开会自然补上）
+    let timer: ReturnType<typeof setTimeout>
+    const tick = () => {
+      check()
+      timer = setTimeout(tick, msUntilNextNine())
+    }
+    timer = setTimeout(tick, msUntilNextNine())
     const { data: sub } = sb.auth.onAuthStateChange(() => check())
     return () => {
       stop = true
-      clearInterval(timer)
+      clearTimeout(timer)
       sub.subscription.unsubscribe()
     }
   }, [])
