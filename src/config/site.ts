@@ -96,10 +96,13 @@ export const siteConfig = {
   privacyNote:
     '你的简历绝不在未经你同意时提供给任何机构；每次推荐前都会与你确认机构与岗位要求。',
 
-  /* ---------- 表单投递（Web3Forms：简历附件以邮件形式直达顾问邮箱，无服务器存储） ---------- */
-  // ⚠ Web3Forms 免费版不支持附件（Pro 功能，2026-09-30 实测）；待用 Google Apps Script 免费方案替换
-  // access key 于 2026-09-30 通过 austin.cui@co-careers.com 注册；留空则回退为邮件客户端投递
-  formAccessKey: '',
+  /* ---------- 投递存储（Supabase：提交保存在数据库，/admin 管理页查看下载） ---------- */
+  // Supabase 项目建好后填入 url 与 anonKey（anonKey 可公开，权限由数据库策略控制）；
+  // 留空则回退为邮件客户端投递。管理页登录账号在 Supabase Authentication 里创建。
+  supabase: {
+    url: '',
+    anonKey: '',
+  },
 
   /* ---------- 站点元信息 ---------- */
   meta: {
