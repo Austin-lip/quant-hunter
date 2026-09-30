@@ -97,8 +97,8 @@ export const siteConfig = {
     '你的简历绝不在未经你同意时提供给任何机构；每次推荐前都会与你确认机构与岗位要求。',
 
   /* ---------- 表单投递（Web3Forms：简历附件以邮件形式直达顾问邮箱，无服务器存储） ---------- */
-  // 到 https://web3forms.com 用邮箱免费获取 access key 后填入；留空则回退为邮件客户端投递
-  formAccessKey: '',
+  // access key 于 2026-09-30 通过 austin.cui@co-careers.com 注册；留空则回退为邮件客户端投递
+  formAccessKey: '4c78556a-dbfc-48c1-828b-32ab36eee646',
 
   /* ---------- 站点元信息 ---------- */
   meta: {
