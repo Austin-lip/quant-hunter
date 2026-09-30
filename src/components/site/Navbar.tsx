@@ -4,6 +4,7 @@ import { Menu, X, BriefcaseBusiness } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { getAllJobs } from '@/content/jobs'
 import { Button } from '@/components/ui/button'
+import AdminNavLink from '@/components/site/AdminNavLink'
 
 const navItems = [
   { to: '/', label: '首页' },
@@ -76,6 +77,7 @@ export default function Navbar() {
               </NavLink>
             ),
           )}
+          <AdminNavLink />
           <Button asChild size="sm" className="ml-3 font-semibold">
             <Link to="/jobs">
               在招岗位
@@ -118,6 +120,7 @@ export default function Navbar() {
               {item.label}
             </NavLink>
           ))}
+          <AdminNavLink mobile onClick={() => setOpen(false)} />
         </nav>
       )}
     </header>
