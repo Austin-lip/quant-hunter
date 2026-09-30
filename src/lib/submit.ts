@@ -1,33 +1,59 @@
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { siteConfig } from '@/config/site'
 
 /**
- * 表单投递 —— 通过 Web3Forms 把简历附件以邮件形式直达顾问邮箱。
- * 静态站点没有服务器，借助 Web3Forms 转发（免费 250 封/月，附件随邮件送达，不落第三方存储）。
- * siteConfig.formAccessKey 留空时返回 not-configured，调用方应回退为 mailto 投递。
+ * 表单投递 —— 写入 Supabase：文本字段进 submissions 表，简历附件进 resumes 存储桶。
+ * 数据库策略：匿名用户只能写入，读取/标记已读仅限 /admin 登录账号（authenticated）。
+ * siteConfig.supabase.url / anonKey 留空时返回 not-configured，调用方回退为 mailto 投递。
  */
-export async function submitWithAttachment(fields: {
-  subject: string
-  /** 文本字段（不含附件） */
-  data: Record<string, string>
-  resume?: File | null
-}): Promise<{ ok: boolean; reason: 'not-configured' | 'sent' | 'error' }> {
-  const key = siteConfig.formAccessKey
-  if (!key) return { ok: false, reason: 'not-configured' }
+let client: SupabaseClient | null = null
 
-  const fd = new FormData()
-  fd.append('access_key', key)
-  fd.append('subject', fields.subject)
-  for (const [k, v] of Object.entries(fields.data)) fd.append(k, v)
-  if (fields.resume) fd.append('attachment', fields.resume)
+export function isFormConfigured(): boolean {
+  return Boolean(siteConfig.supabase.url && siteConfig.supabase.anonKey)
+}
 
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: fd,
-    })
-    const json = await res.json()
-    return { ok: Boolean(json?.success), reason: json?.success ? 'sent' : 'error' }
-  } catch {
-    return { ok: false, reason: 'error' }
+function getClient(): SupabaseClient {
+  if (!client) {
+    client = createClient(siteConfig.supabase.url, siteConfig.supabase.anonKey)
   }
+  return client
+}
+
+export type SubmitResult = { ok: boolean; reason: 'not-configured' | 'sent' | 'error' }
+
+export async function submitApplication(fields: {
+  type: 'apply' | 'register'
+  name: string
+  email: string
+  jobTitle?: string
+  direction?: string
+  region?: string
+  intro?: string
+  resume?: File | null
+}): Promise<SubmitResult> {
+  if (!isFormConfigured()) return { ok: false, reason: 'not-configured' }
+  const supabase = getClient()
+
+  let resumePath: string | null = null
+  if (fields.resume) {
+    const safeName = fields.resume.name.replace(/[^\w.\-一-龥]+/g, '_')
+    resumePath = `${fields.type}/${Date.now()}-${crypto.randomUUID()}-${safeName}`
+    const { error: upErr } = await supabase.storage.from('resumes').upload(resumePath, fields.resume, {
+      contentType: fields.resume.type || 'application/octet-stream',
+    })
+    if (upErr) return { ok: false, reason: 'error' }
+  }
+
+  const { error } = await supabase.from('submissions').insert({
+    type: fields.type,
+    name: fields.name,
+    email: fields.email,
+    job_title: fields.jobTitle ?? null,
+    direction: fields.direction ?? null,
+    region: fields.region ?? null,
+    intro: fields.intro ?? null,
+    resume_path: resumePath,
+  })
+  if (error) return { ok: false, reason: 'error' }
+  return { ok: true, reason: 'sent' }
 }
