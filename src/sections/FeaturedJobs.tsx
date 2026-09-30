@@ -13,7 +13,6 @@ export default function FeaturedJobs() {
         <SectionHeading
           eyebrow="Open Roles"
           title="最新在招岗位"
-          desc="每个岗位都有独立链接，可直接转发给候选人或发布在社交平台。"
         />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {jobs.map((job) => (
