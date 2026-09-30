@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js'
 import {
   Lock, LogOut, RefreshCw, FileText, Mail, Check, Loader2, Inbox,
+  Pin, PinOff, Trash2,
 } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
@@ -19,6 +20,7 @@ type Submission = {
   intro: string | null
   resume_path: string | null
   read: boolean
+  pinned: boolean
 }
 
 function fmtTime(iso: string) {
@@ -66,7 +68,13 @@ export default function AdminPage() {
       .order('created_at', { ascending: false })
       .limit(200)
     if (error) setErr('读取失败：' + error.message)
-    setRows(data as Submission[] | null)
+    // 置顶优先：客户端排序，避免依赖 pinned 列（数据库未升级时列表仍可用）
+    const sorted = ((data as Submission[] | null) ?? []).sort(
+      (a, b) =>
+        Number(b.pinned) - Number(a.pinned) ||
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    )
+    setRows(sorted.length ? sorted : (data as Submission[] | null))
   }
 
   useEffect(() => {
@@ -104,6 +112,30 @@ export default function AdminPage() {
     if (!supabase) return
     await supabase.from('submissions').update({ read: true }).eq('id', id)
     setRows((rs) => rs?.map((r) => (r.id === id ? { ...r, read: true } : r)) ?? null)
+  }
+
+  const togglePin = async (row: Submission) => {
+    if (!supabase) return
+    const pinned = !row.pinned
+    await supabase.from('submissions').update({ pinned }).eq('id', row.id)
+    setRows((rs) =>
+      rs
+        ?.map((r) => (r.id === row.id ? { ...r, pinned } : r))
+        .sort((a, b) =>
+          Number(b.pinned) - Number(a.pinned) ||
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        ) ?? null,
+    )
+  }
+
+  const remove = async (row: Submission) => {
+    if (!supabase) return
+    if (!window.confirm(`确定删除「${row.name}」的投递记录吗？此操作不可恢复。`)) return
+    if (row.resume_path) {
+      await supabase.storage.from('resumes').remove([row.resume_path])
+    }
+    await supabase.from('submissions').delete().eq('id', row.id)
+    setRows((rs) => rs?.filter((r) => r.id !== row.id) ?? null)
   }
 
   if (!configured) {
@@ -187,11 +219,18 @@ export default function AdminPage() {
           {rows.map((r) => (
             <div
               key={r.id}
-              className={`rounded-xl border bg-card p-5 ${r.read ? 'border-border/60 opacity-80' : 'border-primary/40'}`}
+              className={`rounded-xl border bg-card p-5 ${
+                r.pinned
+                  ? 'border-primary/60'
+                  : r.read
+                    ? 'border-border/60 opacity-80'
+                    : 'border-primary/40'
+              }`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
+                    {r.pinned && <Pin className="h-3.5 w-3.5 fill-primary text-primary" />}
                     {!r.read && <span className="h-2 w-2 rounded-full bg-primary" />}
                     <span className="font-display font-bold">{r.name}</span>
                     <span className="text-xs text-muted-foreground">{fmtTime(r.created_at)}</span>
@@ -216,11 +255,30 @@ export default function AdminPage() {
                       <FileText className="h-3.5 w-3.5" /> 简历
                     </Button>
                   )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => togglePin(r)}
+                    className={`gap-1.5 ${r.pinned ? 'text-primary' : 'text-muted-foreground'}`}
+                    title={r.pinned ? '取消置顶' : '置顶'}
+                  >
+                    {r.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+                    {r.pinned ? '取消置顶' : '置顶'}
+                  </Button>
                   {!r.read && (
                     <Button variant="ghost" size="sm" onClick={() => markRead(r.id)} className="gap-1.5 text-muted-foreground">
                       <Check className="h-3.5 w-3.5" /> 已读
                     </Button>
                   )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => remove(r)}
+                    className="gap-1.5 text-muted-foreground hover:text-red-500"
+                    title="删除这条投递"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
                 </div>
               </div>
             </div>
